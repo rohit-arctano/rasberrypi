@@ -43,7 +43,7 @@ class SerialUtil {
     
     // try {
     //   if(port!.isOpen){
-      port!.config = config;
+      port?.config = config;
     
   //     }
   //   } catch (e) {

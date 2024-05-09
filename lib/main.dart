@@ -64,9 +64,7 @@ extension IntToString on int {
 }
 
 class _ExampleAppState extends State<ExampleApp> {
-  
- SerialUtil serialUtil = SerialUtil(); 
-
+  SerialUtil serialUtil = SerialUtil();
 
   @override
   Widget build(BuildContext context) {
@@ -88,20 +86,23 @@ class _ExampleAppState extends State<ExampleApp> {
                       CardListTile('Transport', port.transport.toTransport()),
                       CardListTile('USB Bus', port.busNumber?.toPadded()),
                       GestureDetector(
-                        onTap: ()async {
-                          
-                      
-                          
-                        },
+                        onTap: () async {},
                         child: const Text("connect port"),
                       ),
                       GestureDetector(
                         onTap: () {
-                           serialUtil.openPortToListen(address);
-                           serialUtil.receivingStream?.listen((event) {
-                            print("the incoming strean ${String.fromCharCodes(event)}");
-                            });
-                        
+                          serialUtil.openPortToListen(address);
+                          print(
+                              "Stream is : ${serialUtil.receivingStream == null}");
+                              
+                          serialUtil.receivingStream?.listen((event) {
+                            print(
+                                "the incoming strean ${String.fromCharCodes(event)}");
+                          });
+
+                          // if(serialUtil.receivingStream == null) {
+                            
+                          // }
                         },
                         child: const Text("Listen port"),
                       ),
@@ -128,18 +129,15 @@ class _ExampleAppState extends State<ExampleApp> {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: ()async{
-             await serialUtil.getAvailablePorts();
-       setState(() {
-         
-       });
+          onPressed: () async {
+            await serialUtil.getAvailablePorts();
+            setState(() {});
           },
           child: const Icon(Icons.refresh),
         ),
       ),
     );
   }
-
 }
 
 class CardListTile extends StatelessWidget {
