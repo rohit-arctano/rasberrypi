@@ -14,11 +14,13 @@ class SerialUtil {
 
   Future<void> getAvailablePorts() async {
  
+     if (SerialPort.availablePorts.isNotEmpty) {
       availablePorts = SerialPort.availablePorts;
-      print("the available port is ${availablePorts.map((e) => e.toString())}");
 
       // portsController.add(SerialPort.availablePorts);
-   
+    } else {
+      availablePorts.clear();
+    }
   }
 
   void writeToPort({required Uint8List bytesMesage, String? address}) {
@@ -36,12 +38,17 @@ class SerialUtil {
   if (port != null) {
     SerialPortConfig config = SerialPortConfig();
     config.baudRate = 115200;
-   
-    try {
+    config.bits = 8;
+    config.stopBits = 1;
+    
+    // try {
+    //   if(port!.isOpen){
       port!.config = config;
-    } catch (e) {
-      print("Error setting serial port configuration: $e");
-    }
+    
+  //     }
+  //   } catch (e) {
+  //     print("Error setting serial port configuration: $e");
+  //   }
   } else {
     print("Error: Serial port is null.");
   }
@@ -78,11 +85,10 @@ class SerialUtil {
         receivingStream = reader.stream.asBroadcastStream();
         
 
-        // Return the receivingStream if it's not null
+        
       }
     }
 
-    // Return null if any part of the process fails
     return null;
   }
 

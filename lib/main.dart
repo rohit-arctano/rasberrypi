@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_libserialport/flutter_libserialport.dart';
 import 'package:linux_software/model/serial_util.dart';
 
@@ -63,9 +64,9 @@ extension IntToString on int {
 }
 
 class _ExampleAppState extends State<ExampleApp> {
-  SerialUtil serialUtil = SerialUtil();
+  
+ SerialUtil serialUtil = SerialUtil(); 
 
-  String messageGetting = "";
 
   @override
   Widget build(BuildContext context) {
@@ -86,31 +87,40 @@ class _ExampleAppState extends State<ExampleApp> {
                       CardListTile('Description', port.description),
                       CardListTile('Transport', port.transport.toTransport()),
                       CardListTile('USB Bus', port.busNumber?.toPadded()),
-                     
+                      GestureDetector(
+                        onTap: ()async {
+                          
+                      
+                          
+                        },
+                        child: const Text("connect port"),
+                      ),
                       GestureDetector(
                         onTap: () {
-                              serialUtil.openPortToListen(address);
-                          serialUtil.receivingStream?.listen((event) {
-                            print(
-                                "the incoming stream ${String.fromCharCodes(event)}");
-                            messageGetting = String.fromCharCodes(event);
-                            // setState(() {
-
-                            // });
-                          });
+                           serialUtil.openPortToListen(address);
+                           serialUtil.receivingStream?.listen((event) {
+                            print("the incoming strean ${String.fromCharCodes(event)}");
+                            });
+                        
                         },
                         child: const Text("Listen port"),
                       ),
 
-                      StreamBuilder<Uint8List>(stream: serialUtil.receivingStream, builder: (context,AsyncSnapshot<Uint8List> snapshot){
-                        if(snapshot.hasData){
-                         return Text("the serial data ${String.fromCharCodes(snapshot.data!)}");
-                        } else{
-                          return const CircularProgressIndicator();
-                        }
-                      })
+                      // StreamBuilder<Uint8List>(stream: serialUtil.receivingStream, builder: (context,snapshot){
+                      //   if(snapshot.hasData){
+                      //    return Text("the serial data ${String.fromCharCodes(snapshot.data!)}");
+                      //   } else{
+                      //     return const CircularProgressIndicator();
+                      //   }
+                      // })
 
-                 
+                      // CardListTile('USB Device', port.deviceNumber?.toPadded()),
+                      // CardListTile('Vendor ID', port.vendorId?.toHex()),
+                      // CardListTile('Product ID', port.productId?.toHex()),
+                      // CardListTile('Manufacturer', port.manufacturer),
+                      // CardListTile('Product Name', port.productName),
+                      // CardListTile('Serial Number', port.serialNumber),
+                      // CardListTile('MAC Address', port.macAddress),
                     ],
                   );
                 }),
@@ -118,15 +128,18 @@ class _ExampleAppState extends State<ExampleApp> {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            await serialUtil.getAvailablePorts();
-            setState(() {});
+          onPressed: ()async{
+             await serialUtil.getAvailablePorts();
+       setState(() {
+         
+       });
           },
           child: const Icon(Icons.refresh),
         ),
       ),
     );
   }
+
 }
 
 class CardListTile extends StatelessWidget {
