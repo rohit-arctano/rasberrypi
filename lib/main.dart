@@ -93,18 +93,17 @@ class _ExampleAppState extends State<ExampleApp> {
                             print(SerialPort.lastError);
                             print("the error from port");
                           }
-                        },
-                        child: const Text("connect port"),
-                      ),
-                      GestureDetector(
-                        onTap: () {
                           SerialPortConfig config = SerialPortConfig();
                           config.baudRate = 115200;
-                          try {
-                          port2?.config = config;}catch(e){
-                            print("the error during setconfig ${e}");
-                          }
+                          config.parity = 1;
+                          // config.bits = 8;
+                          // config.stopBits = 1;
+
+                          // try {
+                          //   if(port!.isOpen){
+                          port2?.config = config;
                         },
+                        child: const Text("connect port"),
                       ),
                       GestureDetector(
                         onTap: () {
