@@ -89,19 +89,16 @@ class _ExampleAppState extends State<ExampleApp> {
                       GestureDetector(
                         onTap: () async {
                           port2 = SerialPort(address);
-                          if (!port2!.openReadWrite()) {
-                            print(SerialPort.lastError);
-                            print("the error from port");
-                          }
+                       final opentoRead =   port2?.openRead();
+                      
                           SerialPortConfig config = SerialPortConfig();
                           config.baudRate = 115200;
                           config.parity = 1;
-                          // config.bits = 8;
-                          // config.stopBits = 1;
-
-                          // try {
-                          //   if(port!.isOpen){
-                          port2?.config = config;
+                       
+                          print("the open to read ${port2?.isOpen}");
+                        
+                          
+                          // port2?.config = config;
                         },
                         child: const Text("connect port"),
                       ),
